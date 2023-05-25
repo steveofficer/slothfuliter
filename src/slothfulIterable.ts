@@ -1,5 +1,5 @@
 export class SlothfulIterable<T> implements Iterable<T> {
-    constructor(private generator: () => Generator<T>) {
+    constructor(private generator: () => IterableIterator<T>) {
     }
   
     [Symbol.iterator]() {
@@ -11,8 +11,17 @@ export class SlothfulIterable<T> implements Iterable<T> {
       return iter(this.generator())
     }
 
+    every(predicate: (item: T) => boolean) {
+      for (const item of this.generator()) {
+        if (!predicate(item)) {
+          return false
+        }
+      }
+      return true
+    }
+
     filter(predicate: (item: T) => boolean) {
-      function * filterImpl(iterator: Iterable<T>) {
+      function * iter(iterator: Iterable<T>) {
         for (const result of iterator) {
           if (predicate(result)) {
             yield result;
@@ -20,7 +29,7 @@ export class SlothfulIterable<T> implements Iterable<T> {
         }
       }
   
-      return new SlothfulIterable<T>(() => filterImpl(this.generator()))
+      return new SlothfulIterable<T>(() => iter(this.generator()))
     }
 
     forEach(action: (item: T) => void) {
@@ -30,28 +39,36 @@ export class SlothfulIterable<T> implements Iterable<T> {
     }
 
     map<TResult>(f: (item: T) => TResult) {
-      function * mapImpl(iterator: Iterable<T>) {
+      function * iter(iterator: Iterable<T>) {
         for (const result of iterator) {
           yield f(result);
         }
       }
   
-      return new SlothfulIterable<TResult>(() => mapImpl(this.generator()))
+      return new SlothfulIterable<TResult>(() => iter(this.generator()))
     }
 
-    scan<TState>(f: (curr: T, state: TState) => TState, initialState: TState) {
-      function * scanImpl(iterator: Iterable<T>) {
+    reduce<TResult>(reducer: (result: TResult, item: T) => TResult, initialValue: TResult) {
+      let result = initialValue
+      for (const item of this.generator()) {
+        result = reducer(result, item)
+      }
+      return result
+    }
+
+    scan<TResult>(reducer: (state: TResult, item: T) => TResult, initialState: TResult) {
+      function * iter(iterator: Iterable<T>) {
         let state = initialState
         for (const curr of iterator) {
-          state = f(curr, state)
+          state = reducer(state, curr)
           yield state
         }
       }
-      return new SlothfulIterable<TState>(() => scanImpl(this.generator()))
+      return new SlothfulIterable<TResult>(() => iter(this.generator()))
     }
 
     skip(count: number) {
-      function * skipImpl(iterator: Iterator<T>) {
+      function * iter(iterator: Iterator<T>) {
         let counter = 0;
         let result = iterator.next()
         while(!result.done) {
@@ -64,11 +81,20 @@ export class SlothfulIterable<T> implements Iterable<T> {
         }
       }
       
-      return new SlothfulIterable(() => skipImpl(this.generator()))
+      return new SlothfulIterable(() => iter(this.generator()))
     }
   
+    some(predicate: (item: T) => boolean) {
+      for (const item of this.generator()) {
+        if (predicate(item)) {
+          return true
+        }
+      }
+      return false
+    }
+
     take(count: number) {
-      function * takeImpl(iterator: Iterator<T>) {
+      function * iter(iterator: Iterator<T>) {
         let counter = 0;
         let result = iterator.next()
         while(counter < count && !result.done) {
@@ -77,17 +103,30 @@ export class SlothfulIterable<T> implements Iterable<T> {
           result = iterator.next();
         }
       }
-      return new SlothfulIterable(() => takeImpl(this.generator()))
+      return new SlothfulIterable(() => iter(this.generator()))
     }
   
     takeWhile(predicate: (item: T) => boolean) {
-      function * takeWhileImpl(iterator: Iterator<T>) {
+      function * iter(iterator: Iterator<T>) {
         let result = iterator.next()
         while(predicate(result.value) && !result.done) {
           yield result.value;
           result = iterator.next();
         }
       }
-      return new SlothfulIterable(() => takeWhileImpl(this.generator()))
-    }  
+      return new SlothfulIterable(() => iter(this.generator()))
+    }
+
+    cache() {
+      const cachedIter = [...this.generator()]
+      return new SlothfulIterable(() => cachedIter.values())
+    }
+
+    toMap<TKey, TValue>(keySelector: (item: T) => TKey, valueSelector: (item: T) => TValue) {
+      let result = new Map<TKey, TValue>()
+      for (const item of this.generator()) {
+        result.set(keySelector(item), valueSelector(item))
+      }
+      return result
+    }
   }
