@@ -5,11 +5,16 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -d",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --require ts-node/register ./tests/*.spec.ts"
   },
   "author": "Steve Officer",
   "license": "MIT",
   "devDependencies": {
+    "@types/chai": "^4.3.5",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   }
 }

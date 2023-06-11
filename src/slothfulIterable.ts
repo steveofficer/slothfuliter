@@ -5,9 +5,10 @@ export class SlothfulIterable<T> implements Iterable<T> {
     [Symbol.iterator]() {
       function * iter(iterator: Iterable<T>) {
         for (const item of iterator) {
-          yield item;
+          yield item
         }
       }
+
       return iter(this.generator())
     }
 
@@ -17,6 +18,7 @@ export class SlothfulIterable<T> implements Iterable<T> {
           return false
         }
       }
+
       return true
     }
 
@@ -24,7 +26,7 @@ export class SlothfulIterable<T> implements Iterable<T> {
       function * iter(iterator: Iterable<T>) {
         for (const result of iterator) {
           if (predicate(result)) {
-            yield result;
+            yield result
           }
         }
       }
@@ -34,14 +36,14 @@ export class SlothfulIterable<T> implements Iterable<T> {
 
     forEach(action: (item: T) => void) {
       for (const item of this.generator()) {
-        action(item);
+        action(item)
       }
     }
 
     map<TResult>(f: (item: T) => TResult) {
       function * iter(iterator: Iterable<T>) {
         for (const result of iterator) {
-          yield f(result);
+          yield f(result)
         }
       }
   
@@ -53,6 +55,7 @@ export class SlothfulIterable<T> implements Iterable<T> {
       for (const item of this.generator()) {
         result = reducer(result, item)
       }
+
       return result
     }
 
@@ -64,6 +67,7 @@ export class SlothfulIterable<T> implements Iterable<T> {
           yield state
         }
       }
+      
       return new SlothfulIterable<TResult>(() => iter(this.generator()))
     }
 
@@ -73,11 +77,11 @@ export class SlothfulIterable<T> implements Iterable<T> {
         let result = iterator.next()
         while(!result.done) {
           if (counter >= count) {
-            yield result.value;
+            yield result.value
           } else {
             counter++
           }
-          result = iterator.next();
+          result = iterator.next()
         }
       }
       
@@ -90,19 +94,21 @@ export class SlothfulIterable<T> implements Iterable<T> {
           return true
         }
       }
+
       return false
     }
 
     take(count: number) {
       function * iter(iterator: Iterator<T>) {
-        let counter = 0;
+        let counter = 0
         let result = iterator.next()
         while(counter < count && !result.done) {
-          yield result.value;
-          counter++;
-          result = iterator.next();
+          yield result.value
+          counter++
+          result = iterator.next()
         }
       }
+
       return new SlothfulIterable(() => iter(this.generator()))
     }
   
@@ -110,10 +116,11 @@ export class SlothfulIterable<T> implements Iterable<T> {
       function * iter(iterator: Iterator<T>) {
         let result = iterator.next()
         while(predicate(result.value) && !result.done) {
-          yield result.value;
-          result = iterator.next();
+          yield result.value
+          result = iterator.next()
         }
       }
+
       return new SlothfulIterable(() => iter(this.generator()))
     }
 
@@ -127,6 +134,7 @@ export class SlothfulIterable<T> implements Iterable<T> {
       for (const item of this.generator()) {
         result.set(keySelector(item), valueSelector(item))
       }
+
       return result
     }
   }
