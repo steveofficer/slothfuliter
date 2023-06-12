@@ -1,4 +1,4 @@
-import { SlothfulIter } from '../src'
+import { SlothfulIter } from '../../src'
 import { expect } from 'chai'
 
 describe('Range iterable', () => {
