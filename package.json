@@ -2,7 +2,8 @@
   "name": "slothfuliter",
   "version": "0.0.1",
   "description": "Lazy iterator tools",
-  "main": "index.js",
+  "main": "lib/src/index.js",
+  "types": "lib/src/index.d.ts",
   "scripts": {
     "build": "tsc -d",
     "test": "mocha --require ts-node/register ./tests/**/*.spec.ts"
@@ -16,5 +17,8 @@
     "mocha": "^10.2.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
-  }
+  },
+  "files": [
+    "lib/src/**/*"
+  ]
 }
