@@ -1,8 +1,8 @@
 import { expect } from 'chai'
-import { SlothfulIter } from '../../src'
+import { range } from '../../src'
 
 describe('Range Map', () => {
-    let rangeSequence = SlothfulIter.range(0, 4)
+    let rangeSequence = range(0, 4)
 
     it('returns the transformed values', () => {
         const result = rangeSequence.map(x => x*2)

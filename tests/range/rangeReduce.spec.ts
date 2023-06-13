@@ -1,8 +1,8 @@
 import { expect } from 'chai'
-import { SlothfulIter } from '../../src'
+import { range } from '../../src'
 
 describe('Range Reduce', () => {
-    let rangeSequence = SlothfulIter.range(5, 4)
+    let rangeSequence = range(5, 4)
 
     it('returns the aggregated state', () => {
         const result = rangeSequence.reduce((result, x) => result + x, 0)

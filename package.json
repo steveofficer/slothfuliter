@@ -9,6 +9,18 @@
     "test": "mocha --require ts-node/register ./tests/**/*.spec.ts"
   },
   "author": "Steve Officer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/steveofficer/slothfuliter.git"
+  },
+  "keywords": [
+    "lazy",
+    "iterator",
+    "iterable",
+    "sequence",
+    "functional",
+    "fp"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.3.5",

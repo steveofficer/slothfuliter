@@ -1,8 +1,8 @@
 import { expect } from 'chai'
-import { SlothfulIter } from '../../src'
+import { infinite } from '../../src'
 
 describe('Infinite Take', () => {
-    let infiniteSequence = SlothfulIter.infinite('item')
+    let infiniteSequence = infinite('item')
 
     it('takes the correct amount', () => {
         const result = infiniteSequence.take(3)

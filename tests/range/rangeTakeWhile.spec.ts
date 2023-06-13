@@ -1,8 +1,8 @@
 import { expect } from 'chai'
-import { SlothfulIter } from '../../src'
+import { range } from '../../src'
 
 describe('Range TakeWhile', () => {
-    let rangeSequence = SlothfulIter.range(0, 10)
+    let rangeSequence = range(0, 10)
 
     it('takes the correct amount', () => {
         const result = rangeSequence.takeWhile(x => x < 5)
