@@ -14,9 +14,29 @@ jobs:
         run: npm ci
       - name: Test
         run: npm test
+      - name: Build
+        run: npm run build
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: slothfuliter
+          retention-days: 1
+          path: |
+            lib
+            package.json
+            README.md
+            LICENSE
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: slothfuliter
       - name: NPM Package
         run: npm pack
       - name: NPM Publish
         uses: JS-DevTools/npm-publish@v2.2.0
         with:
-          token: ${{ secrets.NPM_TOKEN }}
+          token: ${{ secrets.NPM_TOKEN }}    
