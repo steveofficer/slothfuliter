@@ -23,4 +23,9 @@ describe('Range TakeWhile', () => {
           .takeWhile(x => x < 2)
         expect([...result]).to.deep.equal([0, 1])
     })
+
+    it('iterates the entire sequence if predicate is always true', () => {
+        const result = rangeSequence.takeWhile(x => x < 99999)
+        expect([...result]).to.deep.equal([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+    })
 })
