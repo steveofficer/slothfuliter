@@ -14,4 +14,8 @@ jobs:
         run: npm ci
       - name: Test
         run: npm test
-
+      - name: NPM Publish
+        uses: JS-DevTools/npm-publish@v2.2.0
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          provenance: true
