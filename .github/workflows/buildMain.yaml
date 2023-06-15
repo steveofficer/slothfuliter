@@ -27,6 +27,7 @@ jobs:
             README.md
             LICENSE
   publish:
+    needs: build
     name: Publish
     runs-on: ubuntu-latest
     steps:
