@@ -21,7 +21,7 @@ describe('Range Filter', () => {
 
     it('iterates the original iterable when called multiple times', () => {
         const odds = rangeSequence.filter(x => x % 2 === 1)
-        expect([...odds]).to.be.deep.equal([0, 1, 3, 5, 7, 9])
+        expect([...odds]).to.be.deep.equal([1, 3, 5, 7, 9])
 
         const result = rangeSequence.filter(x => x % 3 === 0)
         expect([...result]).to.be.deep.equal([0, 3, 6, 9])
