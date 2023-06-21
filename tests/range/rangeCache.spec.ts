@@ -60,7 +60,7 @@ describe('Range Cache', () => {
 
         it('Does not re-run pipeline on second iteration', () => {
             expect([...iterable]).to.deep.equal([0, 1, 2, 3, 4])
-            expect(counter).to.equal(10)
+            expect(counter).to.equal(5)
         })
     })
 })
