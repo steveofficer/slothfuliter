@@ -12,6 +12,15 @@ export class SlothfulIterable<T> implements Iterable<T> {
       return iter(this.generator())
     }
 
+    /**
+     * Determines if all items of the sequence match the provided predicate.
+     * 
+     * @remarks
+     * This function will immediately evaluate the sequence.
+     * 
+     * @param predicate The function evaluate each item against.
+     * @returns true if all items match the predicate, otherwise false.
+     */
     every(predicate: (item: T) => boolean) {
       for (const item of this.generator()) {
         if (!predicate(item)) {
@@ -22,6 +31,15 @@ export class SlothfulIterable<T> implements Iterable<T> {
       return true
     }
 
+    /**
+     * Creates a new lazy sequence that contains only the items that match the provided predicate.
+     * 
+     * @remarks
+     * This function will not evaluate the sequence and will only apply when the sequence is iterated.
+     * 
+     * @param predicate The function evaluate each item against.
+     * @returns a new sequence that when iterated contains only the items that matched the predicate.
+     */
     filter(predicate: (item: T) => boolean) {
       function * iter(iterator: Iterable<T>) {
         for (const result of iterator) {
@@ -34,12 +52,29 @@ export class SlothfulIterable<T> implements Iterable<T> {
       return new SlothfulIterable<T>(() => iter(this.generator()))
     }
 
+    /**
+     * Iterates the sequence and executes the action against each item.
+     * 
+     * @remarks
+     * This function will immediately evaluate the sequence.
+     * 
+     * @param action The action to execute against each item.
+     */
     forEach(action: (item: T) => void) {
       for (const item of this.generator()) {
         action(item)
       }
     }
 
+    /**
+     * Creates a new lazy sequence that contains items that have been transformed by a provided function.
+     * 
+     * @remarks
+     * This function will not evaluate the sequence and will only apply when the sequence is iterated.
+     * 
+     * @param f The transformation to apply against each item.
+     * @returns a new sequence that when iterated contains the transformed items.
+     */
     map<TResult>(f: (item: T) => TResult) {
       function * iter(iterator: Iterable<T>) {
         for (const result of iterator) {
